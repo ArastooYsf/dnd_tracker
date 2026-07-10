@@ -1,6 +1,6 @@
 # dnd_tracker
 
-A new Flutter project.
+A new Flutter project. :D
 
 ## Getting Started
 
