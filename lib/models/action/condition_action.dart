@@ -8,7 +8,7 @@ class ConditionAction extends BaseAction {
     required super.targetCombatantId,
     required this.condition,
     required this.isApply,
-  }) : super(type: ActionType.condition);
+  }) : super(type: ActionType.condition); 
 
   @override
   Combatant execute(Combatant target) {
