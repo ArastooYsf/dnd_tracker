@@ -1,6 +1,7 @@
 import 'base_action.dart';
 import 'damage_action.dart';
 import 'heal_action.dart';
+import 'condition_action.dart';
 
 class ActionFactory {
   static BaseAction fromJson(Map<String, dynamic> json) {
@@ -13,7 +14,7 @@ class ActionFactory {
       case ActionType.heal:
         return HealAction.fromJson(json);
       case ActionType.condition:
-        throw UnimplementedError('ConditionAction قابل deserialize نیست هنوز');
+        return ConditionAction.fromJson(json);
       case ActionType.initiative:
         throw UnimplementedError('InitiativeAction قابل deserialize نیست هنوز');
     }

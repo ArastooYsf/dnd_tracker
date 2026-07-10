@@ -6,9 +6,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('DnD Tracker'),
-      ),
+      appBar: AppBar(title: const Text('DnD Tracker')),
       body: const Center(
         child: Text('Initiative Tracker به‌زودی اینجا میاد'),
       ),
