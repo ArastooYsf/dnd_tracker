@@ -1,5 +1,9 @@
+import 'base_action.dart';
+import '../combatant.dart';
+import '../condition/condition.dart';
+
 class ConditionAction extends BaseAction {
-  final condition condition;
+  final Condition condition;
   final bool isApply; // true = افزودن، false = حذف
 
   ConditionAction({
@@ -8,7 +12,7 @@ class ConditionAction extends BaseAction {
     required super.targetCombatantId,
     required this.condition,
     required this.isApply,
-  }) : super(type: ActionType.condition); 
+  }) : super(type: ActionType.condition);
 
   @override
   Combatant execute(Combatant target) {
@@ -18,21 +22,18 @@ class ConditionAction extends BaseAction {
       );
     } else {
       return target.copyWith(
-        conditions: target.conditions
-            .where((c) => c.id != condition.id)
-            .toList(),
+        conditions:
+            target.conditions.where((c) => c.id != condition.id).toList(),
       );
     }
   }
 
   @override
   Combatant undo(Combatant target) {
-    // برعکس execute
     if (isApply) {
       return target.copyWith(
-        conditions: target.conditions
-            .where((c) => c.id != condition.id)
-            .toList(),
+        conditions:
+            target.conditions.where((c) => c.id != condition.id).toList(),
       );
     } else {
       return target.copyWith(
@@ -40,6 +41,21 @@ class ConditionAction extends BaseAction {
       );
     }
   }
-  
-  // ... data, fromJson
+
+  @override
+  Map<String, dynamic> get data => {
+        'condition': condition.toJson(),
+        'isApply': isApply,
+      };
+
+  factory ConditionAction.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] as Map<String, dynamic>;
+    return ConditionAction(
+      id: json['id'] as String,
+      timestamp: DateTime.parse(json['timestamp'] as String),
+      targetCombatantId: json['targetCombatantId'] as String,
+      condition: Condition.fromJson(data['condition'] as Map<String, dynamic>),
+      isApply: data['isApply'] as bool,
+    );
+  }
 }

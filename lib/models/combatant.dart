@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 import 'custom_field/custom_field.dart';
+import 'condition/condition.dart';
 
 enum CombatantType {
   player,
@@ -21,8 +22,9 @@ class Combatant {
   final int armorClass;
   final CombatantType type;
   final List<CustomField> customFields;
-  final bool isActive; // آیا در نوبت فعلی است
-  final String? notes; // یادداشت‌های DM (مخصوص DM)
+  final List<Condition> conditions;
+  final bool isActive;
+  final String? notes;
 
   const Combatant({
     required this.id,
@@ -34,11 +36,11 @@ class Combatant {
     required this.armorClass,
     required this.type,
     this.customFields = const [],
+    this.conditions = const [],
     this.isActive = false,
     this.notes,
   });
 
-  /// سازنده کمکی برای ساخت یک Combatant جدید با id خودکار
   factory Combatant.create({
     required String name,
     required int hp,
@@ -48,6 +50,7 @@ class Combatant {
     required int armorClass,
     required CombatantType type,
     List<CustomField> customFields = const [],
+    List<Condition> conditions = const [],
     bool isActive = false,
     String? notes,
   }) {
@@ -61,6 +64,7 @@ class Combatant {
       armorClass: armorClass,
       type: type,
       customFields: customFields,
+      conditions: conditions,
       isActive: isActive,
       notes: notes,
     );
@@ -76,6 +80,7 @@ class Combatant {
     int? armorClass,
     CombatantType? type,
     List<CustomField>? customFields,
+    List<Condition>? conditions,
     bool? isActive,
     String? notes,
   }) {
@@ -89,6 +94,7 @@ class Combatant {
       armorClass: armorClass ?? this.armorClass,
       type: type ?? this.type,
       customFields: customFields ?? this.customFields,
+      conditions: conditions ?? this.conditions,
       isActive: isActive ?? this.isActive,
       notes: notes ?? this.notes,
     );
@@ -105,6 +111,7 @@ class Combatant {
       'armorClass': armorClass,
       'type': type.name,
       'customFields': customFields.map((f) => f.toJson()).toList(),
+      'conditions': conditions.map((c) => c.toJson()).toList(),
       'isActive': isActive,
       'notes': notes,
     };
@@ -122,6 +129,9 @@ class Combatant {
       type: CombatantType.values.byName(json['type'] as String),
       customFields: (json['customFields'] as List<dynamic>? ?? [])
           .map((f) => CustomField.fromJson(f as Map<String, dynamic>))
+          .toList(),
+      conditions: (json['conditions'] as List<dynamic>? ?? [])
+          .map((c) => Condition.fromJson(c as Map<String, dynamic>))
           .toList(),
       isActive: json['isActive'] as bool? ?? false,
       notes: json['notes'] as String?,
